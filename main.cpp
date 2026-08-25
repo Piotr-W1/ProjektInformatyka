@@ -52,37 +52,11 @@ cout << endl;
 cout << "Wybrales: " << wiersz << " " << kolumna << endl;
 if (miny[wiersz-1][kolumna-1] == true) {
     t[wiersz-1][kolumna-1] = 'O';
-    /*cout << "  ";
-for (int i = 0; i < 8; i++) {
-        cout << i+1 << " ";
-}
-cout<< endl;
-for (int i = 0; i < 8; i++) {
-    cout << i+1 << " ";
-    for (int j = 0; j < 8; j++) {
-        cout << t[i][j] << " ";
-    }
-    cout << endl;
-}*/
+    
 cout << "Trafiles na mine!" << endl;
 gra = false;
 }
 else {t[wiersz-1][kolumna-1] = 'X';
-
-/*cout << "  ";
-for (int i = 0; i < 8; i++) {
-        cout << i+1 << " ";
-}
-cout<< endl;
-for (int i = 0; i < 8; i++) {
-    cout << i+1 << " ";
-    for (int j = 0; j < 8; j++) {
-        cout << t[i][j] << " ";
-    }
-    cout << endl;
-}*/
-
-
 }
 cout << "  ";
 for (int i = 0; i < 8; i++) {
