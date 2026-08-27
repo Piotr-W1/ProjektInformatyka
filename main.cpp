@@ -1,6 +1,110 @@
 #include <iostream>
 #include <random>
 using namespace std;
+int odkryjPole (int wiersz, int kolumna, char t[8][8], bool miny[8][8], int &odkrytePola){
+    int sasiadMina = 0;
+    if (t[wiersz-1][kolumna-1] != '.'){
+        return 0;
+    } 
+    
+    if (wiersz > 1){
+if (miny[wiersz-2][kolumna-1] == true){
+    sasiadMina++;
+}
+}
+if (wiersz < 8){
+    if (miny[wiersz][kolumna-1] == true){
+    sasiadMina++;
+    }
+    }
+    
+if (kolumna>1){
+if (miny[wiersz-1][kolumna-2] == true){
+    sasiadMina++;
+}
+}
+if (kolumna<8){
+if (miny[wiersz-1][kolumna] == true){
+    sasiadMina++;
+}
+}
+
+if (wiersz>1 && kolumna>1){
+if (miny[wiersz-2][kolumna-2] == true){
+    sasiadMina++;
+}
+}
+if (wiersz>1 && kolumna<8){
+if (miny[wiersz-2][kolumna] == true){
+    sasiadMina++;
+}
+}
+if (wiersz<8 && kolumna>1){
+if (miny[wiersz][kolumna-2] == true){
+    sasiadMina++;
+}
+}
+if (wiersz<8 && kolumna<8){
+if (miny[wiersz][kolumna] == true){
+    sasiadMina++;
+}
+}
+t[wiersz-1][kolumna-1] = '0' + sasiadMina;
+odkrytePola++;
+
+if (sasiadMina==0){
+    if (wiersz > 1){
+        if (miny[wiersz-2][kolumna-1]==false){
+    odkryjPole(wiersz-1, kolumna, t, miny, odkrytePola); 
+        
+}
+}
+if (wiersz < 8){
+    if (miny[wiersz][kolumna-1] == false){
+   odkryjPole(wiersz+1, kolumna, t, miny, odkrytePola);
+   
+}
+}
+if (kolumna > 1){
+    if (miny[wiersz-1][kolumna-2] == false){
+   odkryjPole(wiersz, kolumna-1, t, miny, odkrytePola);
+   
+}
+}
+if (kolumna < 8 ){
+    if (miny[wiersz-1][kolumna] == false){
+   odkryjPole(wiersz, kolumna+1, t, miny, odkrytePola);
+   
+}
+}
+if (wiersz>1 && kolumna>1){
+if (miny[wiersz-2][kolumna-2] == false){
+    odkryjPole (wiersz-1, kolumna-1, t, miny, odkrytePola);
+    
+}
+}
+if (wiersz>1 && kolumna<8){
+if (miny[wiersz-2][kolumna] == false){
+    odkryjPole (wiersz-1, kolumna+1, t, miny, odkrytePola);
+    
+}
+}
+if (wiersz<8 && kolumna>1){
+if (miny[wiersz][kolumna-2] == false){
+    odkryjPole (wiersz+1, kolumna-1, t, miny, odkrytePola);
+    
+}
+}
+if (wiersz<8 && kolumna<8){
+if (miny[wiersz][kolumna] == false){
+    odkryjPole (wiersz+1, kolumna+1, t, miny, odkrytePola);
+    
+}
+}
+
+}
+return sasiadMina;
+}
 
 int main() {
 char t[8][8];
@@ -52,69 +156,29 @@ cin >> kolumna;
 cout << endl;
 if (wiersz < 1 || wiersz > 8 || kolumna < 1 || kolumna > 8){
 cout << "Wpisano nieprawidlowe dane. Wpisz wiersz i kolumne w zakresie od 1 do 8" << endl;}
-else if (t[wiersz-1][kolumna-1] == 'X') {
+else if (t[wiersz-1][kolumna-1] != '.') {
     cout << "Wskazane pole zostalo juz wybrane." << endl;
 }
-}while (wiersz < 1 || wiersz > 8 || kolumna < 1 || kolumna > 8 || t[wiersz-1][kolumna-1] == 'X' );
+}while (wiersz < 1 || wiersz > 8 || kolumna < 1 || kolumna > 8 || t[wiersz-1][kolumna-1] != '.' );
 cout << "Wybrales: " << wiersz << " " << kolumna << endl;
-int sasiadMina = 0;
 
-if (wiersz > 1){
-if (miny[wiersz-2][kolumna-1] == true){
-    sasiadMina++;
-}
-}
-if (wiersz < 8){
-    if (miny[wiersz][kolumna-1] == true){
-    sasiadMina++;}
-    }
-    
-if (kolumna>1){
-if (miny[wiersz-1][kolumna-2] == true){
-    sasiadMina++;
-}
-}
-if (kolumna<8){
-if (miny[wiersz-1][kolumna] == true){
-    sasiadMina++;
-}
-}
-
-if (wiersz>1 && kolumna>1){
-if (miny[wiersz-2][kolumna-2] == true){
-    sasiadMina++;
-}
-}
-if (wiersz>1 && kolumna<8){
-if (miny[wiersz-2][kolumna] == true){
-    sasiadMina++;
-}
-}
-if (wiersz<8 && kolumna>1){
-if (miny[wiersz][kolumna-2] == true){
-    sasiadMina++;
-}
-}
-if (wiersz<8 && kolumna<8){
-if (miny[wiersz][kolumna] == true){
-    sasiadMina++;
-}
-}
-
-    if (miny[wiersz-1][kolumna-1] == true) {
+if (miny[wiersz-1][kolumna-1] == true) {
     t[wiersz-1][kolumna-1] = 'O';
     
 cout << "Trafiles na mine!" << endl;
 gra = false;
 }
-else {t[wiersz-1][kolumna-1] = '0' + sasiadMina;
-    odkrytePola++;
-    if (odkrytePola == 54) {
-                cout << "Odkryles wszystkie pola bez min. Wygrales!" << endl;
-                gra = false;
+
+   else {
+    odkryjPole(wiersz, kolumna, t, miny, odkrytePola);
+}
+if (odkrytePola == 54) {
+            cout << "Odkryles wszystkie pola bez min. Wygrales!" << endl;
+            gra = false;
 
 }
-}
+
+
 cout << "  ";
 for (int i = 0; i < 8; i++) {
         cout << i+1 << " ";
@@ -130,3 +194,5 @@ for (int i = 0; i < 8; i++) {
 }
 return 0;
 }
+
+
