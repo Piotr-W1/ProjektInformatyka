@@ -114,6 +114,8 @@ int liczbaMin = 0;
 bool gra = true;
 int wiersz, kolumna;
 int odkrytePola = 0;
+int akcja;
+
 random_device rd;
 mt19937 generator(rd());
 uniform_int_distribution<int> losowanie(1,8);
@@ -134,20 +136,29 @@ kMiny = losowanie(generator);
     liczbaMin++;
     }
 }
-
-cout << "  ";
+int liczbaFlag = liczbaMin;
+cout << "    ";
 for (int i = 0; i < 8; i++) {
         cout << i+1 << " ";
 }
-cout<< endl;
+cout << endl;
+cout << "  -----------------" << endl;
 for (int i = 0; i < 8; i++) {
-    cout << i+1 << " ";
+    cout << i+1 << " | ";
     for (int j = 0; j < 8; j++) {
         cout << t[i][j] << " ";
     }
     cout << endl;
 }
 while (gra == true){
+do{
+cout << "Liczba flag: " << liczbaFlag << endl;
+cout << "Co chcesz zrobic? Kliknij:\n1 - Odkryj pole.\n2 - Postaw flage.\n3 - Usun flage." << endl;
+cin >> akcja;
+if (akcja == 2 && liczbaFlag == 0){
+    cout << "Nie masz juz flag do postawienia." << endl;
+}
+} while (akcja < 1 || akcja > 3 || (akcja == 2 && liczbaFlag == 0));
 do {
 cout << "Podaj wiersz: ";
 cin >> wiersz;
@@ -156,11 +167,16 @@ cin >> kolumna;
 cout << endl;
 if (wiersz < 1 || wiersz > 8 || kolumna < 1 || kolumna > 8){
 cout << "Wpisano nieprawidlowe dane. Wpisz wiersz i kolumne w zakresie od 1 do 8" << endl;}
-else if (t[wiersz-1][kolumna-1] != '.') {
-    cout << "Wskazane pole zostalo juz wybrane." << endl;
+else if ((akcja == 1 || akcja == 2) && t[wiersz-1][kolumna-1] != '.')
+cout << "Tego pola nie mozna odkryc ani postawic na nim flagi." << endl;
+else if (akcja == 3 && t[wiersz-1][kolumna-1] != 'F') {
+    cout << "Na wskazanym polu nie ma flagi." << endl;
 }
-}while (wiersz < 1 || wiersz > 8 || kolumna < 1 || kolumna > 8 || t[wiersz-1][kolumna-1] != '.' );
+}while (wiersz < 1 || wiersz > 8 || kolumna < 1 || kolumna > 8 
+|| (akcja == 1 || akcja == 2) && t[wiersz-1][kolumna-1] != '.' 
+|| akcja == 3 && t[wiersz-1][kolumna-1] != 'F');
 cout << "Wybrales: " << wiersz << " " << kolumna << endl;
+if (akcja == 1){
 
 if (miny[wiersz-1][kolumna-1] == true) {
     t[wiersz-1][kolumna-1] = 'O';
@@ -177,15 +193,25 @@ if (odkrytePola == 54) {
             gra = false;
 
 }
-
-
-cout << "  ";
+}
+else if (akcja == 2){
+t[wiersz-1][kolumna-1] = 'F';
+cout << "Postawiles flage." << endl;
+liczbaFlag--;
+}
+else if (akcja == 3){
+  t[wiersz-1][kolumna-1] = '.';
+cout << "Usunales flage." << endl;
+liczbaFlag++;
+}
+cout << "    ";
 for (int i = 0; i < 8; i++) {
         cout << i+1 << " ";
 }
-cout<< endl;
+cout << endl;
+cout << "  -----------------" << endl;
 for (int i = 0; i < 8; i++) {
-    cout << i+1 << " ";
+    cout << i+1 << " | ";
     for (int j = 0; j < 8; j++) {
         cout << t[i][j] << " ";
     }
