@@ -1,6 +1,16 @@
 #include <iostream>
 #include <random>
+#include <chrono>
 using namespace std;
+void odkryjMiny (char t[8][8], bool miny[8][8]){
+    for (int i = 0; i<8; i++){
+        for (int j = 0; j<8; j++){
+            if (miny[i][j] == true) {
+                t[i][j] = '*';
+            }
+        }
+    }
+}
 int odkryjPole (int wiersz, int kolumna, char t[8][8], bool miny[8][8], int &odkrytePola){
     int sasiadMina = 0;
     if (t[wiersz-1][kolumna-1] != '.'){
@@ -107,6 +117,7 @@ return sasiadMina;
 }
 
 int main() {
+char ponownie;
 char t[8][8];
 bool miny[8][8];
 int wMiny, kMiny;
@@ -115,13 +126,17 @@ bool gra = true;
 int wiersz, kolumna;
 int odkrytePola = 0;
 int akcja;
-
+int liczbaFlag;
 random_device rd;
 mt19937 generator(rd());
 uniform_int_distribution<int> losowanie(1,8);
 
 cout << "Saper" <<  endl;
 cout << "Piotr Waclawski" << endl;
+do {
+    gra = true;
+    liczbaMin = 0;
+    odkrytePola = 0;
 for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
         t[i][j] = '.';
@@ -136,7 +151,7 @@ kMiny = losowanie(generator);
     liczbaMin++;
     }
 }
-int liczbaFlag = liczbaMin;
+liczbaFlag = liczbaMin;
 cout << "    ";
 for (int i = 0; i < 8; i++) {
         cout << i+1 << " ";
@@ -150,6 +165,7 @@ for (int i = 0; i < 8; i++) {
     }
     cout << endl;
 }
+auto czasStart = chrono::steady_clock::now();
 while (gra == true){
 do{
 cout << "Liczba flag: " << liczbaFlag << endl;
@@ -179,9 +195,10 @@ cout << "Wybrales: " << wiersz << " " << kolumna << endl;
 if (akcja == 1){
 
 if (miny[wiersz-1][kolumna-1] == true) {
-    t[wiersz-1][kolumna-1] = 'O';
+    t[wiersz-1][kolumna-1] = '*';
     
-cout << "Trafiles na mine!" << endl;
+cout << "Trafiles na mine!\nKoniec gry." << endl;
+odkryjMiny(t, miny);
 gra = false;
 }
 
@@ -218,6 +235,14 @@ for (int i = 0; i < 8; i++) {
     cout << endl;
 }
 }
+auto czasKoniec = chrono::steady_clock::now();
+auto czasGry = czasKoniec - czasStart;
+cout << "Czas gry: " << chrono::duration_cast<chrono::seconds>(czasGry).count() << " sek." << endl;
+do{
+cout << "Czy chcesz zagrac ponownie? Wybierz t - tak / n - nie: ";
+cin >> ponownie;
+}while (ponownie != 't' && ponownie != 'n');
+}while (ponownie == 't');
 return 0;
 }
 
